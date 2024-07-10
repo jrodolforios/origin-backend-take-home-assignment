@@ -1,0 +1,31 @@
+{
+  "profiles": {
+    "Dotnet.OriginAssignment": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Qa"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7168;http://localhost:5167"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Qa"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:36723",
+      "sslPort": 44351
+    }
+  }
+}

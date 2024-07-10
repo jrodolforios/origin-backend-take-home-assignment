@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<SonarQubeTestProject>false</SonarQubeTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Models\Request\**" />
+	  <Compile Remove="Models\Types\**" />
+	  <EmbeddedResource Remove="Models\Request\**" />
+	  <EmbeddedResource Remove="Models\Types\**" />
+	  <None Remove="Models\Request\**" />
+	  <None Remove="Models\Types\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.2" />
+		<PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
+		<PackageReference Include="System.ServiceModel.Federation" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.NetTcp" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.Security" Version="6.0.0" />
+	</ItemGroup>
+
+</Project>
