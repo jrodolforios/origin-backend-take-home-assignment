@@ -13,6 +13,20 @@ public class ProcessedLine
     [MaxLength(255)]
     public string Email { get; set; }
 
+    [MaxLength(255)]
+    public string FullName { get; set; }
+
+    [MaxLength(255)]
+    public string EmployerId { get; set; }
+
+    [Required]
+    [MaxLength(2)]
+    public string Country { get; set; }
+
+    public DateTime? BirthDate { get; set; }
+
+    public decimal? Salary { get; set; }
+
     public bool Success { get; set; }
 
     [MaxLength(255)]

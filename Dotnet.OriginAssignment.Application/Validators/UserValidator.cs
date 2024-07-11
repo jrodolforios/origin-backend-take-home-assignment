@@ -28,7 +28,7 @@ namespace Dotnet.OriginAssignment.Application.Validators
 
             RuleFor(user => user.AccessType)
                 .NotEmpty().WithMessage("Access type is required.")
-                .Must(value => value == "dtc" || value == "employer")
+                .Must(value => value == Domain.Models.Enums.AccessType.DTC || value == Domain.Models.Enums.AccessType.Employer)
                 .WithMessage("Access type must be either 'dtc' or 'employer'.");
 
             RuleFor(user => user.FullName)

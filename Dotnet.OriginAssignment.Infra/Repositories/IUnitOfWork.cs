@@ -1,11 +1,11 @@
 ﻿using Dotnet.OriginAssignment.Infra.Context;
-using Dotnet.OriginAssignment.Infra.Repositories.CarRepo;
+using Dotnet.OriginAssignment.Infra.Repositories.ProcessedLineRepo;
 
 namespace Dotnet.OriginAssignment.Infra.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        public ICarRepository Cars { get; }
+        public IProcessedLineRepository ProcessedLines { get; }
 
         ModelContext getContext();
     }

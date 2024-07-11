@@ -9,7 +9,6 @@ public partial class ModelContext : DbContext
     {
     }
 
-    public DbSet<User> Users { get; set; }
     public DbSet<EligibilityFile> EligibilityFiles { get; set; }
     public DbSet<ProcessedLine> ProcessedLines { get; set; }
     public DbSet<Report> Reports { get; set; }
@@ -18,12 +17,6 @@ public partial class ModelContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure User entity
-        modelBuilder.Entity<User>()
-            .HasIndex(u => u.Email)
-            .IsUnique();
-
-        // Configure relationships
         modelBuilder.Entity<ProcessedLine>()
             .HasOne(pl => pl.EligibilityFile)
             .WithMany()

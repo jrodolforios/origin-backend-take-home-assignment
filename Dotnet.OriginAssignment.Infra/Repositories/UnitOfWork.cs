@@ -1,5 +1,6 @@
 ﻿using Dotnet.OriginAssignment.Infra.Context;
 using Dotnet.OriginAssignment.Infra.Repositories.CarRepo;
+using Dotnet.OriginAssignment.Infra.Repositories.ProcessedLineRepo;
 
 namespace Dotnet.OriginAssignment.Infra.Repositories
 {
@@ -7,13 +8,13 @@ namespace Dotnet.OriginAssignment.Infra.Repositories
     {
         private readonly ModelContext _context;
 
-        public ICarRepository Cars { get; }
+        public IProcessedLineRepository ProcessedLines { get; }
 
         public UnitOfWork(ModelContext modelContext)
         {
             _context = modelContext;
 
-            Cars = new CarRepository(this);
+            ProcessedLines = new ProcessedLineRepository(this);
         }
 
         public void Dispose()
