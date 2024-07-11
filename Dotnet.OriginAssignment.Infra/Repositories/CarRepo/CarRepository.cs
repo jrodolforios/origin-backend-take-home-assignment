@@ -12,7 +12,7 @@ namespace Dotnet.OriginAssignment.Infra.Repositories.CarRepo
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Car>> GetCars()
+        public async Task<List<User>> GetCars()
         {
             var context = _unitOfWork.getContext();
 
@@ -21,7 +21,7 @@ namespace Dotnet.OriginAssignment.Infra.Repositories.CarRepo
             return result;
         }
 
-        public async Task SaveCar(Car carEntity)
+        public async Task SaveCar(User carEntity)
         {
             var context = _unitOfWork.getContext();
 

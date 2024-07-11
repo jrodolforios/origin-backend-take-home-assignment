@@ -5,35 +5,45 @@ namespace Dotnet.OriginAssignment.Infra.Context;
 
 public partial class ModelContext : DbContext
 {
-    public DbSet<Car> Cars { get; set; }
-    public DbSet<Engine> Engines { get; set; }
-    public DbSet<Wheel> Wheels { get; set; }
-    public DbSet<Interior> Interiors { get; set; }
-
     public ModelContext(DbContextOptions<ModelContext> options) : base(options)
     {
     }
+
+    public DbSet<User> Users { get; set; }
+    public DbSet<EligibilityFile> EligibilityFiles { get; set; }
+    public DbSet<ProcessedLine> ProcessedLines { get; set; }
+    public DbSet<Report> Reports { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Define the relationship between Car and Engine
-        modelBuilder.Entity<Car>()
-            .HasOne(c => c.Engine)
-            .WithMany()
-            .HasForeignKey(c => c.EngineId);
+        // Configure User entity
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
 
-        // Define the relationship between Car and Interior
-        modelBuilder.Entity<Car>()
-            .HasOne(c => c.Interior)
+        // Configure relationships
+        modelBuilder.Entity<ProcessedLine>()
+            .HasOne(pl => pl.EligibilityFile)
             .WithMany()
-            .HasForeignKey(c => c.InteriorId);
+            .HasForeignKey(pl => pl.EligibilityFileId);
 
-        // Define the relationship between Car and Wheel
-        modelBuilder.Entity<Car>()
-            .HasMany(c => c.Wheels)
-            .WithOne(w => w.Car)
-            .HasForeignKey(w => w.CarId);
+        modelBuilder.Entity<Report>()
+            .HasOne(r => r.EligibilityFile)
+            .WithMany()
+            .HasForeignKey(r => r.EligibilityFileId);
+
+        modelBuilder.Entity<Report>()
+            .HasMany(r => r.ProcessedLines)
+            .WithOne()
+            .HasForeignKey(pl => pl.EligibilityFileId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Report>()
+            .HasMany(r => r.UnprocessedLines)
+            .WithOne()
+            .HasForeignKey(pl => pl.EligibilityFileId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -4,7 +4,7 @@ namespace Dotnet.OriginAssignment.Infra.Repositories.CarRepo
 {
     public interface ICarRepository
     {
-        Task<List<Car>> GetCars();
-        Task SaveCar(Car carEntity);
+        Task<List<User>> GetCars();
+        Task SaveCar(User carEntity);
     }
 }
