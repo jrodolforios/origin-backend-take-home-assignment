@@ -1,7 +1,7 @@
 ﻿using Dotnet.OriginAssignment.Domain.Models.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Dotnet.OriginAssignment.Domain.Models.Models
+namespace Dotnet.OriginAssignment.Domain.Models.Requests
 {
     public class CreateUser
     {

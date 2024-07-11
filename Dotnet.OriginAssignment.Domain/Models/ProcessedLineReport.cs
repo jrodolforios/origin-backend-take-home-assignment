@@ -1,6 +1,6 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
 
-namespace Dotnet.OriginAssignment.Domain.Models.Models
+namespace Dotnet.OriginAssignment.Domain.Models
 {
     public class ProcessedLineReport
     {

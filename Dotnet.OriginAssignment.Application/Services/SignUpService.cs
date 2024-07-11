@@ -1,44 +1,68 @@
 ﻿using Dotnet.OriginAssignment.Application.Services.Interfaces;
-using Dotnet.OriginAssignment.Domain.Models.Models;
 using Dotnet.OriginAssignment.Infra.Repositories;
 using AutoMapper;
 using Dotnet.OriginAssignment.Domain.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+using FluentValidation;
+using Dotnet.OriginAssignment.Domain.Models.Requests;
+using Dotnet.OriginAssignment.Domain.Models.Response;
 
 namespace Dotnet.OriginAssignment.Application.Services
 {
-    public class User
+    public class SignUpService(IUnitOfWork _unitOfWork, IMapper _mapper, IValidator<Signup> _signupRequestValidator, UserRepository) : ISignUpService
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public async Task<GetUser> SignUp(Signup signupRequest)
+        {
+            var validationResult = _signupRequestValidator.Validate(signupRequest);
 
-        [Required]
-        [MaxLength(255)]
-        public string Email { get; set; }
+            if (!validationResult.IsValid)
+            {
+                var errorMessage = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                throw new Exception(errorMessage);
+            }
 
-        [Required]
-        [MaxLength(255)]
-        public string Password { get; set; }
+            // Check if the email is associated with some employer via the eligibility file
+            var employer = await _employerRepository.GetEmployerByEmailAsync(signupRequest.Email);
+            User user;
 
-        [Required]
-        [MaxLength(2)]
-        public string Country { get; set; }
+            if (employer != null)
+            {
+                // Use employer-provided data to create the user
+                user = new User
+                {
+                    Email = signupRequest.Email,
+                    Password = signupRequest.Password,
+                    Country = signupRequest.Country,
+                    AccessType = Domain.Models.Enums.AccessType.Employer,
+                    FullName = employer.FullName,
+                    EmployerId = employer.EmployerId,
+                    BirthDate = employer.BirthDate,
+                    Salary = employer.Salary
+                };
+            }
+            else
+            {
+                // Validate if the email already exists
+                var existingUser = await _userRepository.GetUserByEmailAsync(signupRequest.Email);
+                if (existingUser != null)
+                {
+                    throw new Exception("Email already exists.");
+                }
 
-        [Required]
-        [MaxLength(50)]
-        public string AccessType { get; set; } // "dtc" or "employer"
+                // Create the user with DTC access type
+                user = new User
+                {
+                    Email = signupRequest.Email,
+                    Password = signupRequest.Password,
+                    Country = signupRequest.Country,
+                    AccessType = Domain.Models.Enums.AccessType.DTC
+                };
+            }
 
-        [MaxLength(255)]
-        public string FullName { get; set; }
+            // Save the user to the User Service
+            var createdUser = await _userRepository.CreateUserAsync(user);
 
-        [MaxLength(255)]
-        public string EmployerId { get; set; }
-
-        public DateTime? BirthDate { get; set; }
-
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? Salary { get; set; }
+            // Return the created user details
+            return _mapper.Map<User, GetUser>(createdUser);
+        }
     }
 }

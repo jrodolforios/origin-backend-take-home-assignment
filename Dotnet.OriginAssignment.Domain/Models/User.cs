@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Dotnet.OriginAssignment.Domain.Models.Enums;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Dotnet.OriginAssignment.Domain.Models
 {
@@ -8,7 +9,7 @@ namespace Dotnet.OriginAssignment.Domain.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string Country { get; set; }
-        public string AccessType { get; set; } // "dtc" or "employer"
+        public AccessType AccessType { get; set; } // "dtc" or "employer"
         public string FullName { get; set; }
         public string EmployerId { get; set; }
         public DateTime? BirthDate { get; set; }

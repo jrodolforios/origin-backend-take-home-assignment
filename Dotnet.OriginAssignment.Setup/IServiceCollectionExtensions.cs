@@ -1,8 +1,12 @@
 ﻿using Dotnet.OriginAssignment.Application.Services;
 using Dotnet.OriginAssignment.Application.Services.Interfaces;
+using Dotnet.OriginAssignment.Application.Validators;
 using Dotnet.OriginAssignment.Domain.Configuration;
+using Dotnet.OriginAssignment.Domain.Models;
+using Dotnet.OriginAssignment.Domain.Models.Requests;
 using Dotnet.OriginAssignment.Infra.Context;
 using Dotnet.OriginAssignment.Infra.Repositories;
+using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +33,9 @@ namespace Dotnet.OriginAssignment.Setup
             }
 
             services.AddAutoMapper(typeof(MappingProfile));
+
+            services.AddTransient<IValidator<User>, UserValidator>();
+            services.AddTransient<IValidator<Signup>, SignupRequestValidator>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
