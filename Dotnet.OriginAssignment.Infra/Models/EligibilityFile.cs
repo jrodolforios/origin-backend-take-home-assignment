@@ -15,5 +15,5 @@ public class EligibilityFile
 
     [Required]
     [MaxLength(255)]
-    public string EmployerName { get; set; }
+    public string EmployerId { get; set; }
 }

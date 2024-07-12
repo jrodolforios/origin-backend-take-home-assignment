@@ -12,6 +12,16 @@ namespace Dotnet.OriginAssignment.Infra.Repositories.ProcessedLineRepo
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<ProcessedLine> CreateProcessedLine(ProcessedLine processedLine)
+        {
+            var context = _unitOfWork.getContext();
+
+            context.ProcessedLines.Add(processedLine);
+            await context.SaveChangesAsync();
+
+            return processedLine;
+        }
+
         public async Task<ProcessedLine> GetValidProcessedLineByEmailAsync(string email)
         {
             return await _unitOfWork.getContext().ProcessedLines.SingleOrDefaultAsync(e => e.Email == email);

@@ -4,8 +4,11 @@ using Dotnet.OriginAssignment.Domain.Models.Response;
 
 namespace Dotnet.OriginAssignment.Application.Services.Interfaces
 {
-    public interface ISignUpService
+    public interface IUserService
     {
-        Task<GetUser> SignUp(Signup signupRequest);
+        Task<User> GetUserByEmailAsync(string email);
+        Task<User> CreateUserAsync(User userRequest);
+        Task<User> GetUserAsync(string userId);
+        Task PatchUserAsync(string userId, Dictionary<string, string> fieldsToUpdate);
     }
 }

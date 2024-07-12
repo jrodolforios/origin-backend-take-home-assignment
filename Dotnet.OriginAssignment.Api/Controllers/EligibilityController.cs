@@ -1,4 +1,5 @@
 ﻿
+using Azure.Core;
 using Dotnet.OriginAssignment.Application.Services.Interfaces;
 using Dotnet.OriginAssignment.Domain.Models;
 using Dotnet.OriginAssignment.Domain.Models.Requests;
@@ -9,16 +10,16 @@ namespace Dotnet.OriginAssignment.Api.Controllers
 {
     [ApiController]
     [Route("[controller]/")]
-    public class SignUpController(ISignUpService _signUpService) : Controller
+    public class EligibilityController(IEligibilityService _eligibilityService) : Controller
     {
-        [HttpPost()]
-        [ProducesResponseType(typeof(List<GetUser>), StatusCodes.Status200OK)]
+        [HttpPost(Name = "Process")]
+        [ProducesResponseType(typeof(List<ProcessedLineReport>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SignUp(Signup signupRequest)
+        public async Task<IActionResult> SignUp(EligibilityFileRequest eligibilityRequest)
         {
             try
             {
-                var result = await _signUpService.SignUp(signupRequest);
+                var result = await _eligibilityService.ProcessEligibilityFileAsync(eligibilityRequest); ;
                 return Ok(result);
             }
             catch (Exception ex)

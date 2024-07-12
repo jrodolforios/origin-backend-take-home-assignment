@@ -2,9 +2,12 @@
 
 namespace Dotnet.OriginAssignment.Domain.Models
 {
-    public class EligibilityFileRequest
+    public class EligibilityFileEntry
     {
-        public string FileUrl { get; set; }
-        public string EmployerName { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string Country { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public decimal? Salary { get; set; }
     }
 }

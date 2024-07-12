@@ -11,7 +11,7 @@ using Dotnet.OriginAssignment.Domain.Configuration;
 
 namespace Dotnet.OriginAssignment.Application.Services
 {
-    public class SignUpService(Configuration _config, IUnitOfWork _unitOfWork, IMapper _mapper, IValidator<Signup> _signupRequestValidator, IValidator<User> _userValidator) : ISignUpService
+    public class SignUpService(Configuration _config, IUserService _userService, IUnitOfWork _unitOfWork, IMapper _mapper, IValidator<Signup> _signupRequestValidator, IValidator<User> _userValidator) : ISignUpService
     {
         public async Task<GetUser> SignUp(Signup signupRequest)
         {
@@ -27,7 +27,7 @@ namespace Dotnet.OriginAssignment.Application.Services
             var processedLine = await _unitOfWork.ProcessedLines.GetValidProcessedLineByEmailAsync(signupRequest.Email);
             User user;
 
-            if (processedLine != null)
+            if (processedLine != null && processedLine.Success)
             {
                 // Use employer-provided data to create the user
                 user = new User
@@ -45,7 +45,7 @@ namespace Dotnet.OriginAssignment.Application.Services
             else
             {
                 // Validate if the email already exists
-                var existingUser = await GetUserByEmailAsync(signupRequest.Email);
+                var existingUser = await _userService.GetUserByEmailAsync(signupRequest.Email);
                 if (existingUser != null)
                 {
                     throw new Exception("Email already exists.");
@@ -62,65 +62,10 @@ namespace Dotnet.OriginAssignment.Application.Services
             }
 
             // Save the user to the User Service
-            var createdUser = await CreateUserAsync(user);
+            var createdUser = await _userService.CreateUserAsync(user);
 
             // Return the created user details
             return _mapper.Map<User, GetUser>(createdUser);
-        }
-
-        public async Task<User> GetUserByEmailAsync(string email)
-        {
-            var client = new RestClient(_config.ExternalApi.BaseUrl);
-            var request = new RestRequest("users", Method.Get);
-            request.AddParameter("email", email);
-
-            var response = await client.ExecuteAsync<User>(request);
-
-            if (!response.IsSuccessful)
-            {
-                throw new Exception($"Failed to retrieve user: {response.ErrorMessage}");
-            }
-
-            return response.Data;
-        }
-
-        public async Task<User> CreateUserAsync(User userRequest)
-        {
-            var validationResult = _userValidator.Validate(userRequest);
-
-            if (!validationResult.IsValid)
-            {
-                var errorMessage = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
-                throw new Exception(errorMessage);
-            }
-
-            var client = new RestClient(_config.ExternalApi.BaseUrl);
-            var request = new RestRequest("users", Method.Post);
-            request.AddJsonBody(userRequest);
-
-            var response = await client.ExecuteAsync<User>(request);
-
-            if (!response.IsSuccessful)
-            {
-                throw new Exception($"Failed to create user: {response.ErrorMessage}");
-            }
-
-            return response.Data;
-        }
-
-        public async Task<User> GetUserAsync(string userId)
-        {
-            var client = new RestClient(_config.ExternalApi.BaseUrl);
-            var request = new RestRequest($"users/{userId}", Method.Get);
-
-            var response = await client.ExecuteAsync<User>(request);
-
-            if (!response.IsSuccessful)
-            {
-                throw new Exception($"Failed to get user {userId}: {response.ErrorMessage}");
-            }
-
-            return response.Data;
         }
     }
 }

@@ -36,10 +36,18 @@ namespace Dotnet.OriginAssignment.Setup
 
             services.AddTransient<IValidator<User>, UserValidator>();
             services.AddTransient<IValidator<Signup>, SignupRequestValidator>();
+            services.AddTransient<IValidator<EligibilityFileRequest>, EligibilityFileRequestValidator>();
+            services.AddTransient<IValidator<EligibilityFileEntry>, EligibilityRecordValidator>();
 
+            services.AddHttpClient();
+
+            services.AddScoped<IEligibilityService, EligibilityService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<ISignUpService, SignUpService>();
+            services.AddTransient<IEmployerService, EmployerService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IEligibilityService, EligibilityService>();
 
             services.AddSingleton(configuration.Get<Configuration>());
 

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Dotnet.OriginAssignment.Tests.Api.Controllers
 {
-    internal class BookingsControllerTest
+    internal class SignUpControllerTest
     {
 
         [SetUp]
