@@ -96,13 +96,6 @@ namespace Dotnet.OriginAssignment.Application.Services
                             Success = processedLine.Success
                         });
                     }
-
-                    _unitOfWork.getContext().ProcessedLines.Add(new ProcessedLine
-                    {
-                        Email = record.Email,
-                        Success = true,
-                        EligibilityFileId = employer
-                    });
                 }
 
                 await _unitOfWork.getContext().SaveChangesAsync();

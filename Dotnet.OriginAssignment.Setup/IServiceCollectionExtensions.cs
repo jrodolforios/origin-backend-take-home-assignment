@@ -44,6 +44,8 @@ namespace Dotnet.OriginAssignment.Setup
             services.AddScoped<IEligibilityService, EligibilityService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddAutoMapper(typeof(MappingProfile));
+
             services.AddTransient<ISignUpService, SignUpService>();
             services.AddTransient<IEmployerService, EmployerService>();
             services.AddTransient<IUserService, UserService>();
